@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-bridge-kit"
+version = "0.1.0"
+description = "Hardened Model Context Protocol (MCP) developer server and automated JSON-RPC protocol compliance verifier"
+readme = "README.md"
+authors = [
+    { name = "Hakan Ates", email = "163651512+Hakantes@users.noreply.github.com" }
+]
+license = { text = "MIT" }
+keywords = ["mcp", "model-context-protocol", "ai-agents", "developer-tools", "json-rpc", "testing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Testing"
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.7.0",
+    "rich>=13.7.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0"
+]
+
+[project.scripts]
+mcp-bridge = "mcp_bridge.cli:main"
+mcp-verify = "mcp_bridge.cli:verify_cli"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
