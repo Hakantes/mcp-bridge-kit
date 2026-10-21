@@ -1,4 +1,4 @@
-# MCP-Bridge-Kit 🔌
+# MCP-Bridge-Kit
 
 [![CI Status](https://github.com/Hakantes/mcp-bridge-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/Hakantes/mcp-bridge-kit/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)

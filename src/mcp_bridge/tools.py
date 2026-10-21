@@ -22,6 +22,8 @@ class ToolRegistry:
 
     def is_path_safe(self, target_path: str) -> Tuple[bool, Optional[Path], Optional[str]]:
         """Validates that a path is strictly confined within sandbox_root without escaping."""
+        if not target_path or not str(target_path).strip():
+            return False, None, "Path cannot be empty or whitespace."
         try:
             resolved = (self.sandbox_root / target_path).resolve()
             if not resolved.is_relative_to(self.sandbox_root):
@@ -141,6 +143,9 @@ class ToolRegistry:
         if not safe:
             return CallToolResult(content=[ContentItem(text=err)], isError=True)
 
+        if resolved.is_dir():
+            return CallToolResult(content=[ContentItem(text=f"Error: Target path '{path_str}' is a directory.")], isError=True)
+
         try:
             resolved.parent.mkdir(parents=True, exist_ok=True)
             resolved.write_text(content, encoding="utf-8")
@@ -149,13 +154,17 @@ class ToolRegistry:
             return CallToolResult(content=[ContentItem(text=f"Failed to write file: {exc}")], isError=True)
 
     def _tool_list_directory(self, arguments: Dict[str, Any]) -> CallToolResult:
-        path_str = arguments.get("path", ".")
+        path_str = arguments.get("path")
+        if not path_str or not str(path_str).strip():
+            path_str = "."
         safe, resolved, err = self.is_path_safe(path_str)
         if not safe:
             return CallToolResult(content=[ContentItem(text=err)], isError=True)
 
         if not resolved.exists():
             return CallToolResult(content=[ContentItem(text=f"Error: Directory '{path_str}' does not exist.")], isError=True)
+        if not resolved.is_dir():
+            return CallToolResult(content=[ContentItem(text=f"Error: '{path_str}' is not a directory.")], isError=True)
 
         items = []
         try:
